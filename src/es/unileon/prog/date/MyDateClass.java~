@@ -2,22 +2,22 @@ package src.es.unileon.prog.date;
 import java.*;
 import java.util.*;
 import src.es.unileon.prog.date.*;
-public class Date{
+public class MyDateClass{
 
 	private int _year;
 	private int _month;
 	private int _day;
 
-	public Date() {
+	public MyDateClass() {
 
 		this._day =0;
 		this._month = 0;
 		this._year= 0;
 	}
 
-	public Date(int day, int month, int year) throws DateException{
+	public MyDateClass(int day, int month, int year) throws DateException{
 
-		StringBuffer mensaje = new StringBuffer();
+		StringBuffer mensaje = new StringBugger();
 
 		if ((day>31) || (day < 0)){
 			mensaje.append("Day error. Day value must be between 0 and 31.");
@@ -186,10 +186,8 @@ public class Date{
 	//FOR
 	//For a date, print the months left until the end of the year.
 	public void getMonthsLeft(){
-
-		try{
-			Date aux = new Date(this._day, this._month, this._year);	
-			StringBuffer monthsLeft = new StringBuffer();
+		Date aux = new Date(this);	
+		StringBuffer monthsLeft = new StringBuffer();
 			try {
 				for (int i= this._month; i<=12; i++){
 					aux.setMonth(i);
@@ -198,18 +196,15 @@ public class Date{
 			} catch (Exception DateException) {
 				System.err.println("Date error");
 			}
-		} catch (Exception DateException) {
-				System.err.println("Date error");
-		}
 	}
 
 
 
 	//Write a method in Date class that prints a date.
-	public String printDate(){
+	public void printDate(){
 		StringBuffer date = new StringBuffer();
 		date.append( Integer.toString(this._day) +  " "+ Integer.toString(this._month) +  " "+ Integer.toString(this._year));
-	return date.toString();
+	
 	}
 
 
@@ -219,13 +214,9 @@ public class Date{
 		switch (this._month) {
 			case 2:
 				for (int i=this._day; i<=28; i++){
-					try{
-						Date aux = new Date(this._day, this._month, this._year);
-						aux.setDay(i);
-						aux.printDate();
-					} catch (Exception DateException) {
-						System.err.println("Date error");
-					}
+					Date aux = new Date(this);
+					aux.setDay(i);
+					aux.printDate();
 				}		
 				break;
 			case 4:
@@ -233,13 +224,9 @@ public class Date{
 			case 9:
 			case 11:
 				for (int i=this._day; i<=30; i++){
-					try{
-						Date aux = new Date(this._day, this._month, this._year);
-						aux.setDay(i);
-						aux.printDate();
-					} catch (Exception DateException) {
-						System.err.println("Date error");
-					}
+					Date aux = new Date(this);
+					aux.setDay(i);
+					aux.printDate();
 				}		
 				break;
 
@@ -251,13 +238,9 @@ public class Date{
 			case 10:
 			case 12:
 				for (int i=this._day; i<=31; i++){
-					try{
-						Date aux = new Date(this._day, this._month, this._year);
-						aux.setDay(i);
-						aux.printDate();
-					} catch (Exception DateException) {
-						System.err.println("Date error");
-					}
+					Date aux = new Date(this);
+					aux.setDay(i);
+					aux.printDate();
 				}		
 				break;
 		}
@@ -339,54 +322,48 @@ public class Date{
 	*/
 
 	public int numberOfAttempsToGenerateRandomDate(){
-		try{
-			Date aux = new Date(this._day, this._month, this._year);
 
-			int randomMonth; 
-			int randomDay;  
-			int numberOfAttemps = 0;
+		Date aux = new Date(this);
 
+		int randomMonth; 
+		int randomDay;  
+		int numberOfAttemps = 0;
+
+		randomDay = (int) (Math.random() *31 + 1);
+		randomMonth = (int) (Math.random() *12 + 1);
+		aux.setMonth(randomMonth);
+		aux.setDay(randomDay );
+		numberOfAttemps++;
+
+		while (!this.isSame(aux)){
+			randomDay = (int) (Math.random() *31 + 1);
+			randomMonth = (int) (Math.random() *12 + 1);
+			aux.setMonth(randomMonth);
+			aux.setDay(randomDay );
+			numberOfAttemps++;
+		}
+	
+		return numberOfAttemps ;
+
+	}
+
+	public int numberOfAttempsToGenerateRandomDate2(){
+
+		Date aux = new Date(this);
+		int randomMonth; 
+		int randomDay;  
+		int numberOfAttemps = 0;
+
+		do {
 			randomDay = (int) (Math.random() *31 + 1);
 			randomMonth = (int) (Math.random() *12 + 1);
 			aux.setMonth(randomMonth);
 			aux.setDay(randomDay );
 			numberOfAttemps++;
 
-			while (!this.isSame(aux)){
-				randomDay = (int) (Math.random() *31 + 1);
-				randomMonth = (int) (Math.random() *12 + 1);
-				aux.setMonth(randomMonth);
-				aux.setDay(randomDay );
-				numberOfAttemps++;
-			}
-			return numberOfAttemps;
-		} catch (Exception DateException) {
-			System.err.println("Date error");
-			return 0;
-		}
-	}
+		}while (!this.isSame(aux));
 
-	public int numberOfAttempsToGenerateRandomDate2(){
-		try{
-			Date aux = new Date(this._day, this._month, this._year);
-			int randomMonth; 
-			int randomDay;  
-			int numberOfAttemps = 0;
-
-			do {
-				randomDay = (int) (Math.random() *31 + 1);
-				randomMonth = (int) (Math.random() *12 + 1);
-				aux.setMonth(randomMonth);
-				aux.setDay(randomDay );
-				numberOfAttemps++;
-
-			}while (!this.isSame(aux));
-
-			return numberOfAttemps;
-		} catch (Exception DateException) {
-			System.err.println("Date error");
-			return 0;
-		}
+		return numberOfAttemps;
 
 	}
 
